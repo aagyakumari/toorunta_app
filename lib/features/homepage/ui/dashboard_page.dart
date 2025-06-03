@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:toorunta_mobile/component/topnavbar.dart';
 import 'package:toorunta_mobile/features/login/ui/login_screen.dart';
+import 'package:toorunta_mobile/features/map/ui/map.dart';
+import 'package:toorunta_mobile/features/product_search/ui/product_list_page.dart';
 import 'dashboard_metrics.dart';
 import 'dashboard_tabs.dart';
 import 'recently_viewed.dart';
@@ -20,60 +23,61 @@ class _DashboardPageState extends State<DashboardPage> {
       backgroundColor: const Color(0xfff9f9f9),
       body: Stack(
         children: [
-          // Main Page
-          SafeArea(
-            child: Column(
-              children: [
-                AppBar(
-                  backgroundColor: Colors.white,
-                  title: const Text(
-                    "toorunta",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  elevation: 0,
-                  leading: IconButton(
-                    icon: const Icon(Icons.menu, color: Colors.black),
-                    onPressed: () {
-                      setState(() {
-                        _isMenuOpen = true;
-                      });
-                    },
-                  ),
-                  actions: const [
-                    Icon(Icons.notifications_none, color: Colors.black),
-                    SizedBox(width: 16),
-                    CircleAvatar(backgroundColor: Colors.indigo),
-                    SizedBox(width: 16),
-                  ],
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Column(
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add, color: Colors.white),
-                          label: const Text("Create New Listing", style: TextStyle(color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff2e3c89),
-                            minimumSize: const Size(double.infinity, 48),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          Column(
+            children: [
+              TopNavBar(
+                onMenuTap: () {
+                  setState(() {
+                    _isMenuOpen = true;
+                  });
+                },
+                onFilterTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductListPage()),
+                  );
+                },
+                onAvatarTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapPage()),
+                  );
+                },
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add, color: Colors.white),
+                        label: const Text(
+                          "Create New Listing",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff2e3c89),
+                          minimumSize: const Size(double.infinity, 48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        const DashboardMetrics(),
-                        const SizedBox(height: 16),
-                        const DashboardTabs(),
-                        const SizedBox(height: 16),
-                        const RecentlyViewedSection(),
-                        const SizedBox(height: 16),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 16),
+                      const DashboardMetrics(),
+                      const SizedBox(height: 16),
+                      const DashboardTabs(),
+                      const SizedBox(height: 16),
+                      const RecentlyViewedSection(),
+                      const SizedBox(height: 16),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
 
           // Inline Menu Drawer
@@ -92,7 +96,11 @@ class _DashboardPageState extends State<DashboardPage> {
                     padding: EdgeInsets.all(16),
                     child: Text(
                       "toorunta",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                   ListTile(
@@ -141,10 +149,10 @@ class _DashboardPageState extends State<DashboardPage> {
                       setState(() {
                         _isMenuOpen = false;
                       });
-                      // Delay the navigation slightly to allow menu to close
                       Future.delayed(const Duration(milliseconds: 300), () {
                         Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
                           (route) => false,
                         );
                       });
