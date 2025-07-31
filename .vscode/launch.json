@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Flutter: Mapbox App",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "ACCESS_TOKEN=pk.eyJ1Ijoia2Fya2lkZW5uaXNoIiwiYSI6ImNtYzFxamF2dDAwYWkyanNkdmVmb2xjcmIifQ.GYmg-lVPs_0u92my2Fyq2g"
+      ]
+    }
+  ]
+}
