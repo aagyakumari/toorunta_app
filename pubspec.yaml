@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0
+  sdk: '>=3.2.6 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,16 +34,31 @@ dependencies:
   latlong2: ^0.9.0
   geolocator: ^11.0.0 # For getting current location
   permission_handler: ^11.0.1 # For location permissions
+  cupertino_icons: ^1.0.2
+  path_provider: ^2.0.0 # Or latest version
+  device_info_plus: ^10.1.0
+  http: ^1.4.0 # if not already added
+  url_launcher: ^6.2.5
+  # flutter_web_auth: ^0.5.0
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-  # mapbox_maps_flutter: ^2.5.1
-  # google_maps_flutter: ^2.6.0 # or latest
+
+
+
+ 
+  mapbox_maps_flutter: ^2.5.1
+  # mapbox_maps_flutter: ^0.4.0
+  google_maps_flutter: ^2.5.3
+  # baato_maps: ^1.0.2
+  #locations
+  baato_maps:
+    git: 
+      url: https://github.com/baato/flutter_baato_maps.git
+      ref: version-upgrade-maplibre_gl 
   # flutter_dotenv: ^5.2.1
   # geolocator: ^13.0.2
+  image_picker: ^1.0.7
+  # geocoding: ^2.2.0
+  # google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +69,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,10 +113,42 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-
 # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/toorunta_logo.png  
+   - assets/images/toorunta_logo.png
+   - assets/images/to-runta.png
+   - assets/images/o.png
    - assets/images/google.png  
    - assets/images/facebook.png  
+   - assets/images/gift_boxes.png
+   - assets/images/banner.png
+   - assets/images/product1.jpg
+   - assets/images/product2.jpg
+   - assets/images/product3.jpg
+   - assets/images/product4.jpg
+   - assets/images/product5.jpg
+   - assets/images/product6.jpg
+   - assets/images/product7.jpg
+   - assets/images/product8.jpg
+   - assets/images/product9.jpg
+   - assets/images/promo_banner.jpg
+   - assets/images/to-runta.png
+   - assets/images/o.png
+   - assets/images/product_marker.png
+   - assets/images/user_location_marker.png
+
+
+  # fonts:
+  #   - family: Codec Pro
+  #     fonts:
+  #       - asset: assets/fonts/CodecPro-Bold.ttf
+  #         weight: 700
+  #       - asset: assets/fonts/CodecPro-Regular.ttf
+  #         weight: 400
+
+
+
+
+
+
 

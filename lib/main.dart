@@ -1,14 +1,72 @@
+import 'package:baato_maps/baato_maps.dart';
 import 'package:flutter/material.dart';
-import 'package:toorunta_mobile/features/homepage/ui/dashboard_page.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart' as mb;
+import 'package:toorunta_mobile/component/baato_helper.dart';
+import 'package:toorunta_mobile/component/location_helper.dart';
+import 'package:toorunta_mobile/features/Dashboard/ui/dashboard_page.dart';
 import 'package:toorunta_mobile/features/login/ui/login_screen.dart';
-import 'package:toorunta_mobile/features/login/ui/map_page.dart';
+// import 'package:toorunta_mobile/features/login/ui/map_page.dart';
 import 'package:toorunta_mobile/features/map/ui/map.dart';
+import 'package:toorunta_mobile/features/listing_creation/ui/listing_creation_page.dart';
+import 'package:toorunta_mobile/features/map/ui/mapbox.dart';
+import 'package:toorunta_mobile/features/map/ui/user_tracking.dart';
+import 'package:toorunta_mobile/features/splash/splash_screen.dart';
+import 'package:http/http.dart' as http;
 
+// void main() {
+//   runApp(const MyApp());
+// }
 
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
 
+//   await Baato.configure(
+//     apiKey: "bpk.wsEpuG9KOXb-ysyCJg3xs-yNpyppNGDlIjs9irMoSW0g",
+//     enableLogging: true,
+//   );
+
+//   final position = await getCurrentPosition();
+//   if (position != null) {
+//     print('📍 Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+
+//     final postalCode = await getPostalCodeFromBaato(position.latitude, position.longitude);
+//     print('📮 Postal Code (Geozip): $postalCode');
+
+//     // Optionally, save to Hive/shared preferences for use in other pages
+//   } else {
+//     print('⚠️ Could not retrieve location.');
+//   }
+
+//   runApp(const MyApp());
+// }
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   await Baato.configure(
+//     apiKey: "bpk.wsEpuG9KOXb-ysyCJg3xs-yNpyppNGDlIjs9irMoSW0g",
+//     enableLogging: true,
+//   );
+
+//   runApp(const MyApp());
+// }
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // // Set access token using --dart-define
+  // const accessToken = String.fromEnvironment("ACCESS_TOKEN");
+  // mb.MapboxOptions.setAccessToken(accessToken);
+
   runApp(const MyApp());
 }
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   await Baato.configure(
+//       apiKey: "bpk.wsEpuG9KOXb-ysyCJg3xs-yNpyppNGDlIjs9irMoSW0g",
+//       enableLogging: true);
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,7 +95,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: const SplashScreen(),
+      routes: {
+        '/listing-creation': (context) => const ListingCreationPage(),
+      },
     );
   }
 }
