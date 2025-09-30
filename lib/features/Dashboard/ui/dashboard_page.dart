@@ -49,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     onFilterTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ProductListPage()),
+                        MaterialPageRoute(builder: (context) => const ProductListPage(categoryId: 0,)),
                       );
                     },
                   ),

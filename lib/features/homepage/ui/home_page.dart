@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                     onFilterTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProductListPage()),
+                        MaterialPageRoute(builder: (context) => ProductListPage(categoryId: 0,)),
                       );
                     },
                   ),

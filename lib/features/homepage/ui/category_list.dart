@@ -13,7 +13,7 @@ class _CategoryListState extends State<CategoryList> {
   List<dynamic> categories = [];
   bool isLoading = true;
   final String bearerToken = '12|oz0UBtmZSqTFwkEemhbaPUSviyvLexQbYYOasU6vd0f8f31d';
-  final String apiUrl = 'http://localhost:8000/api/v1/product-categories/top-level';
+  final String apiUrl = 'http://168.231.122.172/api/v1/product-categories/top-level';
 
   @override
   void initState() {

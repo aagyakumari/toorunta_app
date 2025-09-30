@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
+import '../model/product.dart';
 import 'package:toorunta_mobile/features/product_detail/ui/product_detail_page.dart';
-import 'package:toorunta_mobile/features/product_detail/model/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final int index;
-  
-  const ProductCard({
-    Key? key,
-    required this.index,
-  }) : super(key: key);
+  final Product product;
+
+  const ProductCard({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final product = Product.sampleProducts[index % Product.sampleProducts.length];
-
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDetailPage(
-              productId: product.id,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ProductDetailPage(productId: product.id),
+        //   ),
+        // );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -46,8 +39,8 @@ class ProductCard extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 bottomLeft: Radius.circular(12),
               ),
-              child: Image.asset(
-                'assets/images/product${product.id}.jpg',
+              child: Image.network(
+                product.thumbnailUrl,
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
