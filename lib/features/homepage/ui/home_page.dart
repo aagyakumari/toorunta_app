@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:toorunta_mobile/component/main_scaffold.dart';
 import 'package:toorunta_mobile/component/sidebar_menu.dart';
 import 'package:toorunta_mobile/component/topnavbar.dart';
@@ -7,7 +9,6 @@ import 'package:toorunta_mobile/features/homepage/ui/flash_deals_banner.dart';
 import 'package:toorunta_mobile/features/homepage/ui/product_grid.dart';
 import 'package:toorunta_mobile/features/homepage/ui/red_banner.dart';
 import 'package:toorunta_mobile/features/homepage/ui/search_bar.dart';
-import 'package:toorunta_mobile/features/map/ui/map.dart';
 import 'package:toorunta_mobile/features/product_search/ui/product_list_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,21 +22,51 @@ class _HomePageState extends State<HomePage> {
   bool _isMenuOpen = false;
   String selectedMenu = '';
 
-  // Sample product data - replace with real data
-  final List<Map<String, dynamic>> trendingProducts = [
-    {'image': 'assets/images/product1.jpg', 'name': 'iPhone 14 Pro Max', 'price': '\$999'},
-    {'image': 'assets/images/product2.jpg', 'name': 'MacBook Air M2', 'price': '\$1299'},
-    {'image': 'assets/images/product3.jpg', 'name': 'iPad Pro 12.9"', 'price': '\$1099'},
-  ];
+  final String baseUrl = 'https://staging.axioncode.co/api/v1';
 
-  final List<Map<String, dynamic>> recommendedProducts = [
-    {'image': 'assets/images/product4.jpg', 'name': 'AirPods Pro', 'price': '\$249'},
-    {'image': 'assets/images/product5.jpg', 'name': 'Apple Watch Series 8', 'price': '\$399'},
-    {'image': 'assets/images/product6.jpg', 'name': 'iMac 24"', 'price': '\$1299'},
-    {'image': 'assets/images/product7.jpg', 'name': 'Mac mini M2', 'price': '\$599'},
-    {'image': 'assets/images/product8.jpg', 'name': 'Magic Keyboard', 'price': '\$299'},
-    {'image': 'assets/images/product9.jpg', 'name': 'Studio Display', 'price': '\$1599'},
-  ];
+  // 🔹 Fetch trending products
+  Future<List<Map<String, dynamic>>> fetchTrendingProducts() async {
+    final response = await http.get(Uri.parse('$baseUrl/products/trending'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final products = data['data']?['products'] ?? [];
+      return List<Map<String, dynamic>>.from(products.map((product) => {
+            'image': product['featured_image_url'] ?? product['thumbnail_url'],
+            'name': product['name'],
+            'price': product['price'],
+          }));
+    } else {
+      throw Exception('Failed to load trending products');
+    }
+  }
+
+  // 🔹 Fetch category products (for "You May Also Like" section)
+  Future<List<Map<String, dynamic>>> fetchCategoryProducts(int categoryId) async {
+    final response = await http.get(Uri.parse('$baseUrl/products/category/$categoryId'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final products = data['data']?['products'] ?? [];
+      return List<Map<String, dynamic>>.from(products.map((product) => {
+            'image': product['featured_image_url'] ?? product['thumbnail_url'],
+            'name': product['name'],
+            'price': product['price'],
+          }));
+    } else {
+      throw Exception('Failed to load products for category $categoryId');
+    }
+  }
+
+  // 🔹 Fetch both categories (ID 12 and 18)
+  Future<List<Map<String, dynamic>>> fetchRecommendedProducts() async {
+    try {
+      final category12 = await fetchCategoryProducts(12);
+      final category84 = await fetchCategoryProducts(84);
+      return [...category12, ...category84];
+    } catch (e) {
+      debugPrint('Error fetching recommended products: $e');
+      return [];
+    }
+  }
 
   void _toggleMenu(bool open) {
     setState(() {
@@ -67,7 +98,9 @@ class _HomePageState extends State<HomePage> {
                     onFilterTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProductListPage(categoryId: 0,)),
+                        MaterialPageRoute(
+                          builder: (context) => const ProductListPage(categoryId: 0),
+                        ),
                       );
                     },
                   ),
@@ -90,17 +123,47 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 16),
                           const CategoryList(),
                           const SizedBox(height: 24),
-                          ProductGrid(
-                            title: 'New and Trending',
-                            products: trendingProducts,
+
+                          // 🔹 Trending Products
+                          FutureBuilder<List<Map<String, dynamic>>>(
+                            future: fetchTrendingProducts(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(child: Text('Error loading trending products'));
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(child: Text('No trending products'));
+                              }
+                              return ProductGrid(
+                                title: 'New and Trending',
+                                products: snapshot.data!,
+                              );
+                            },
                           ),
+
                           const SizedBox(height: 24),
                           const FlashDealsBanner(),
                           const SizedBox(height: 24),
-                          ProductGrid(
-                            title: 'You May Also Like',
-                            products: recommendedProducts,
+
+                          // 🔹 You May Also Like (dynamic categories)
+                          FutureBuilder<List<Map<String, dynamic>>>(
+                            future: fetchRecommendedProducts(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(child: Text('Error loading recommendations'));
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(child: Text('No recommended products'));
+                              }
+                              return ProductGrid(
+                                title: 'You May Also Like',
+                                products: snapshot.data!,
+                              );
+                            },
                           ),
+
                           const SizedBox(height: 24),
                         ],
                       ),
@@ -109,6 +172,8 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+
+            // 🔹 Side Menu
             SideMenu(
               isOpen: _isMenuOpen,
               onClose: () => _toggleMenu(false),

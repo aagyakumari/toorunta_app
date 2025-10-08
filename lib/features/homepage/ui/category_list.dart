@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryList extends StatefulWidget {
   const CategoryList({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _CategoryListState extends State<CategoryList> {
   List<dynamic> categories = [];
   bool isLoading = true;
   final String bearerToken = '12|oz0UBtmZSqTFwkEemhbaPUSviyvLexQbYYOasU6vd0f8f31d';
-  final String apiUrl = 'http://168.231.122.172/api/v1/product-categories/top-level';
+  final String apiUrl = 'https://staging.axioncode.co/api/v1/product-categories/top-level';
 
   @override
   void initState() {
@@ -44,31 +45,52 @@ class _CategoryListState extends State<CategoryList> {
     }
   }
 
-  IconData getCategoryIcon(String name) {
-    switch (name.toLowerCase()) {
+  // ✅ Updated to use SVG icons from assets
+  Widget getCategoryIcon(String name, {double size = 30}) {
+    String formattedName = name.trim().toLowerCase();
+    String assetPath;
+
+    switch (formattedName) {
       case 'electronics':
-        return Icons.computer;
+        assetPath = 'assets/category-icons/Electronics.svg';
+        break;
       case 'fashion':
-        return Icons.checkroom;
+        assetPath = 'assets/category-icons/Fashion.svg';
+        break;
       case 'health & beauty':
-        return Icons.spa;
+        assetPath = 'assets/category-icons/Health & Beauty.svg';
+        break;
       case 'home & living':
-        return Icons.home;
+        assetPath = 'assets/category-icons/Homeliving.svg';
+        break;
       case 'sports & outdoors':
-        return Icons.sports_soccer;
+        assetPath = 'assets/category-icons/Sports & Outdoors.svg';
+        break;
       case 'automotive':
-        return Icons.directions_car;
+        assetPath = 'assets/category-icons/Automotive.svg';
+        break;
       case 'books & stationery':
-        return Icons.book;
+        assetPath = 'assets/category-icons/Books & Stationery.svg';
+        break;
       case 'toys & games':
-        return Icons.toys;
+        assetPath = 'assets/category-icons/Toys & Games.svg';
+        break;
       case 'pet supplies':
-        return Icons.pets;
+        assetPath = 'assets/category-icons/Pet Supplies.svg';
+        break;
       case 'groceries & essentials':
-        return Icons.local_grocery_store;
+        assetPath = 'assets/category-icons/Groceries & Essentials.svg';
+        break;
       default:
-        return Icons.category;
+        assetPath = 'assets/category-icons/default.svg';
     }
+
+    return SvgPicture.asset(
+      assetPath,
+      width: size,
+      height: size,
+      fit: BoxFit.contain,
+    );
   }
 
   @override
@@ -103,11 +125,7 @@ class _CategoryListState extends State<CategoryList> {
                             color: Colors.grey[100],
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Icon(
-                            getCategoryIcon(category['name'] ?? ''),
-                            color: const Color(0xFF2D3363),
-                            size: 24,
-                          ),
+                          child: getCategoryIcon(category['name'] ?? ''),
                         ),
                         const SizedBox(height: 8),
                         Expanded(
