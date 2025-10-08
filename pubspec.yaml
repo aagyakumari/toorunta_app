@@ -39,6 +39,9 @@ dependencies:
   device_info_plus: ^10.1.0
   http: ^1.4.0 # if not already added
   url_launcher: ^6.2.5
+  flutter_svg: ^2.0.10
+  cached_network_image: ^3.3.1
+
   # flutter_web_auth: ^0.5.0
 
 
@@ -136,6 +139,18 @@ flutter:
    - assets/images/o.png
    - assets/images/product_marker.png
    - assets/images/user_location_marker.png
+   - assets/category-icons/Automotive.svg
+   - assets/category-icons/Fashion.svg
+   - assets/category-icons/Health & Beauty.svg
+   - assets/category-icons/Homeliving.svg
+   - assets/category-icons/Books & Stationery.svg
+   - assets/category-icons/Pet Supplies.svg
+   - assets/category-icons/default.svg
+   - assets/category-icons/Electronics.svg
+   - assets/category-icons/Groceries & Essentials.svg
+   - assets/category-icons/Sports & Outdoors.svg
+   - assets/category-icons/Toys & Games.svg
+
 
 
   # fonts:
